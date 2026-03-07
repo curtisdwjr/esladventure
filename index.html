@@ -2153,7 +2153,7 @@ function buildLearnPrepositions() {
   return '<div class="learn-prep-grid">' + preps.map(p =>
     '<div class="learn-prep-item" onclick="learnSpeak(\'' + p.word + '\')">' +
       p.svg +
-      '<div class="prep-word">' + p.word + ' 🔊</div>' +
+      '<div class="prep-word">' + p.word + '</div>' +
     '</div>'
   ).join('') + '</div>';
 }
