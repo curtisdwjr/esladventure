@@ -1579,7 +1579,7 @@ function renderPrepVisual(act, content) {
   html += '<div class="question-text">Where is the ball?</div>';
   html += '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin:12px 0">';
   html += '<div class="prep-scene" style="margin:0">' + diagram + '</div>';
-  html += '<button class="listen-btn prep-listen-btn" style="width:22px;height:22px;font-size:0.65rem" onclick="speakWord(\'' + act.letter.replace(/'/g,"\\'") + '\')">🔊</button>';
+  html += '<button style="width:22px;height:22px;font-size:0.65rem;background:linear-gradient(135deg,#29B6F6,#0288D1);color:white;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0" onclick="speakWord(\'' + act.letter.replace(/'/g,"\\'") + '\')">🔊</button>';
   html += '</div>';
   html += '<div class="choices">';
   act.options.forEach((o, i) => {
