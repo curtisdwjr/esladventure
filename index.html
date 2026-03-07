@@ -1580,9 +1580,9 @@ function renderPrepVisual(act, content) {
   const diagram = diagrams[act.position] || '';
   let html = '<span class="activity-type-badge">Prepositions · ' + act.pts + ' pts</span>';
   html += '<div class="question-text">Where is the ball?</div>';
-  html += '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin:12px 0">';
-  html += '<div class="prep-scene" style="margin:0">' + diagram + '</div>';
-  html += '<button style="width:22px;height:22px;font-size:0.65rem;background:linear-gradient(135deg,#29B6F6,#0288D1);color:white;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0" onclick="speakWord(\'' + act.letter.replace(/'/g,"\\'") + '\')">🔊</button>';
+  html += '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin:12px 0">';
+  html += '<div class="prep-scene" style="margin:0;cursor:pointer" onclick="speakWord(\'' + act.letter.replace(/'/g,"\\'") + '\')" title="Tap to hear">' + diagram + '</div>';
+  html += '<div style="font-size:0.75rem;color:#aaa;margin-top:2px">Tap image to hear again</div>';
   html += '</div>';
   html += '<div class="choices">';
   act.options.forEach((o, i) => {
