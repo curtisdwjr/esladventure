@@ -1577,9 +1577,9 @@ function renderPrepVisual(act, content) {
   const diagram = diagrams[act.position] || '';
   let html = '<span class="activity-type-badge">Prepositions · ' + act.pts + ' pts</span>';
   html += '<div class="question-text">Where is the ball?</div>';
-  html += '<div style="display:flex;align-items:center;justify-content:center;gap:16px;margin:12px 0">';
+  html += '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin:12px 0">';
   html += '<div class="prep-scene" style="margin:0">' + diagram + '</div>';
-  html += '<button class="listen-btn" style="flex-shrink:0;width:36px;height:36px;font-size:1rem" onclick="speakWord(\'' + act.letter.replace(/'/g,"\\'") + '\')">🔊</button>';
+  html += '<button class="listen-btn" style="width:28px;height:28px;font-size:0.8rem" onclick="speakWord(\'' + act.letter.replace(/'/g,"\\'") + '\')">🔊</button>';
   html += '</div>';
   html += '<div class="choices">';
   act.options.forEach((o, i) => {
@@ -1630,7 +1630,9 @@ function checkListenWrite(answer, pts) {
 function speakWord(word) {
   if (!speechSynth) return;
   speechSynth.cancel();
-  const utt = new SpeechSynthesisUtterance(word);
+  // iOS reads single uppercase letters as "capital X" — use lowercase for single letters
+  const text = word.length === 1 ? word.toLowerCase() : word;
+  const utt = new SpeechSynthesisUtterance(text);
   utt.rate = 0.8;
   utt.lang = 'en-US';
   speechSynth.speak(utt);
