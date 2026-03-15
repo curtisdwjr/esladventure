@@ -716,6 +716,25 @@ canvas#wheelCanvas { border-radius: 50%; }
 .learn-color-item .color-swatch { width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 8px; border: 2px solid rgba(0,0,0,0.1); }
 .learn-color-item .color-name { font-size: 0.85rem; font-weight: 800; color: var(--text); }
 
+.learn-food-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.learn-food-item {
+  background: white;
+  border-radius: 14px;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid #F0F0F0;
+  transition: transform 0.1s;
+}
+.learn-food-item:active { transform: scale(0.94); background: #F9F9F9; }
+.learn-food-item .food-emoji { font-size: 2.6rem; display: block; margin-bottom: 6px; }
+.learn-food-item .food-word { font-size: 1rem; font-weight: 800; color: var(--text); }
+
 .learn-prep-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -917,6 +936,8 @@ canvas#wheelCanvas { border-radius: 50%; }
     <div class="learn-card" onclick="openLearnTopic('prepositions')"><span class="lc-emoji">📦</span><h3>Prepositions</h3></div>
     <div class="learn-card" onclick="openLearnTopic('emotions')"><span class="lc-emoji">😊</span><h3>Emotions</h3></div>
     <div class="learn-card" onclick="openLearnTopic('body')"><span class="lc-emoji">💪</span><h3>Body Parts</h3></div>
+    <div class="learn-card" onclick="openLearnTopic('fruits')"><span class="lc-emoji">🍎</span><h3>Fruits</h3></div>
+    <div class="learn-card" onclick="openLearnTopic('vegetables')"><span class="lc-emoji">🥦</span><h3>Vegetables</h3></div>
   </div>
   <div style="padding:0 20px 20px">
     <button class="start-btn" style="width:100%;font-size:1.1rem;padding:14px" onclick="showMap()">🚀 Play Games</button>
@@ -1191,6 +1212,8 @@ const MODULES = [
   { id:'prepositions', title:'Prepositions',  emoji:'📦', color:'#F3E5F5', iconBg:'#AB47BC', desc:'In, on, under, next to...',activities: buildPrepositionActivities() },
   { id:'emotions',     title:'Emotions',      emoji:'😊', color:'#FFF8E1', iconBg:'#FF8F00', desc:'Feelings & emotions',      activities: buildEmotionActivities() },
   { id:'body',         title:'Body Parts',    emoji:'💪', color:'#FFF3E0', iconBg:'#FF7043', desc:'Parts of the body',        activities: buildBodyActivities() },
+  { id:'fruits',       title:'Fruits',        emoji:'🍎', color:'#FCE4EC', iconBg:'#E91E63', desc:'Common fruits',            activities: buildFruitActivities() },
+  { id:'vegetables',   title:'Vegetables',    emoji:'🥦', color:'#E8F5E9', iconBg:'#43A047', desc:'Common vegetables',        activities: buildVegetableActivities() },
 ];
 
 // ========================
@@ -1905,7 +1928,8 @@ function openLearnTopic(topic) {
     alphabet:'🔤 Alphabet', numbers:'🔢 Numbers', days:'📅 Days & Months',
     time:'🕐 Time', money:'💵 Money', colors:'🎨 Colors',
     family:'👨‍👩‍👧 Family', prepositions:'📦 Prepositions',
-    emotions:'😊 Emotions', body:'💪 Body Parts'
+    emotions:'😊 Emotions', body:'💪 Body Parts',
+    fruits:'🍎 Fruits', vegetables:'🥦 Vegetables'
   };
   document.getElementById('learn-topic-title').textContent = titles[topic];
   const content = document.getElementById('learn-topic-content');
@@ -1914,7 +1938,8 @@ function openLearnTopic(topic) {
     days: buildLearnDays, time: buildLearnTime,
     money: buildLearnMoney, colors: buildLearnColors,
     family: buildLearnFamily, prepositions: buildLearnPrepositions,
-    emotions: buildLearnEmotions, body: buildLearnBody
+    emotions: buildLearnEmotions, body: buildLearnBody,
+    fruits: buildLearnFruits, vegetables: buildLearnVegetables
   };
   content.innerHTML = builders[topic]();
   showScreen('learn-topic-screen');
@@ -1948,6 +1973,7 @@ function numberWord(n) {
   const ones = ['','one','two','three','four','five','six','seven','eight','nine',
     'ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
   const tens = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+  if (n === 100) return 'one hundred';
   if (n <= 19) return ones[n];
   if (n % 10 === 0) return tens[Math.floor(n/10)];
   return tens[Math.floor(n/10)] + '-' + ones[n % 10];
@@ -2388,8 +2414,8 @@ function buildLearnFamily() {
     '</div>' +
     // Generation 3
     '<div class="ft-row">' +
-      ftNode('👦','Brother','brother') +
-      ftNode('👧','Sister','sister') +
+      ftNode('🧑','Brother','brother') +
+      ftNode('👩‍🦱','Sister','sister') +
       ftNode('👦','Nephew','nephew') +
       ftNode('👧','Niece','niece') +
     '</div>' +
@@ -2410,6 +2436,10 @@ function buildLearnFamily() {
         ftChip('🤵','Husband','husband') +
         ftChip('👰','Wife','wife') +
       '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">' +
+        ftChip('🧔','Father-in-law','father in law') +
+        ftChip('👩‍🦳','Mother-in-law','mother in law') +
+      '</div>' +
     '</div>' +
   '</div>';
 }
@@ -2425,6 +2455,89 @@ function ftNode(emoji, word, speak) {
 function ftChip(emoji, word, speak) {
   return '<div onclick="learnSpeak(\'' + speak + '\')" style="background:white;border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:800;font-size:0.85rem;box-shadow:0 2px 6px rgba(0,0,0,0.1)">' +
     '<span style="font-size:1.3rem;line-height:1">' + emoji + '</span> ' + word + '</div>';
+}
+
+// ========================
+// FRUITS & VEGETABLES
+// ========================
+function buildLearnFruits() {
+  const fruits = [
+    { emoji:'🍎', word:'Apple' }, { emoji:'🍌', word:'Banana' },
+    { emoji:'🍊', word:'Orange' }, { emoji:'🍇', word:'Grapes' },
+    { emoji:'🍓', word:'Strawberry' }, { emoji:'🍉', word:'Watermelon' },
+    { emoji:'🍋', word:'Lemon' }, { emoji:'🍑', word:'Peach' },
+    { emoji:'🍐', word:'Pear' }, { emoji:'🍍', word:'Pineapple' },
+  ];
+  return '<div class="learn-food-grid">' + fruits.map(f =>
+    '<div class="learn-food-item" onclick="learnSpeak(\'' + f.word + '\')">' +
+      '<span class="food-emoji">' + f.emoji + '</span>' +
+      '<div class="food-word">' + f.word + '</div>' +
+    '</div>'
+  ).join('') + '</div>';
+}
+
+function buildLearnVegetables() {
+  const vegs = [
+    { emoji:'🥦', word:'Broccoli' }, { emoji:'🥕', word:'Carrot' },
+    { emoji:'🌽', word:'Corn' }, { emoji:'🥔', word:'Potato' },
+    { emoji:'🍅', word:'Tomato' }, { emoji:'🥒', word:'Cucumber' },
+    { emoji:'🧅', word:'Onion' }, { emoji:'🧄', word:'Garlic' },
+    { emoji:'🍄', word:'Mushroom' }, { emoji:'🥬', word:'Lettuce' },
+  ];
+  return '<div class="learn-food-grid">' + vegs.map(v =>
+    '<div class="learn-food-item" onclick="learnSpeak(\'' + v.word + '\')">' +
+      '<span class="food-emoji">' + v.emoji + '</span>' +
+      '<div class="food-word">' + v.word + '</div>' +
+    '</div>'
+  ).join('') + '</div>';
+}
+
+function buildFruitActivities() {
+  const fruits = [
+    { emoji:'🍎', word:'Apple' }, { emoji:'🍌', word:'Banana' },
+    { emoji:'🍊', word:'Orange' }, { emoji:'🍇', word:'Grapes' },
+    { emoji:'🍓', word:'Strawberry' }, { emoji:'🍉', word:'Watermelon' },
+    { emoji:'🍋', word:'Lemon' }, { emoji:'🍑', word:'Peach' },
+    { emoji:'🍐', word:'Pear' }, { emoji:'🍍', word:'Pineapple' },
+  ];
+  const acts = [];
+  fruits.forEach(f => {
+    const others = fruits.filter(x => x.word !== f.word);
+    const wrong = shuffle(others).slice(0,3).map(x => x.word);
+    const pos = Math.floor(Math.random() * 4);
+    const opts = [...wrong.slice(0,pos), f.word, ...wrong.slice(pos)];
+    acts.push(mc('What fruit is this?', f.emoji, opts, pos, 10));
+
+    const wrong2 = shuffle(others).slice(0,3).map(x => x.word);
+    const pos2 = Math.floor(Math.random() * 4);
+    const opts2 = [...wrong2.slice(0,pos2), f.word, ...wrong2.slice(pos2)];
+    acts.push(listen(f.word.toLowerCase(), 'Which fruit did you hear?', opts2, pos2, 10));
+  });
+  return acts;
+}
+
+function buildVegetableActivities() {
+  const vegs = [
+    { emoji:'🥦', word:'Broccoli' }, { emoji:'🥕', word:'Carrot' },
+    { emoji:'🌽', word:'Corn' }, { emoji:'🥔', word:'Potato' },
+    { emoji:'🍅', word:'Tomato' }, { emoji:'🥒', word:'Cucumber' },
+    { emoji:'🧅', word:'Onion' }, { emoji:'🧄', word:'Garlic' },
+    { emoji:'🍄', word:'Mushroom' }, { emoji:'🥬', word:'Lettuce' },
+  ];
+  const acts = [];
+  vegs.forEach(v => {
+    const others = vegs.filter(x => x.word !== v.word);
+    const wrong = shuffle(others).slice(0,3).map(x => x.word);
+    const pos = Math.floor(Math.random() * 4);
+    const opts = [...wrong.slice(0,pos), v.word, ...wrong.slice(pos)];
+    acts.push(mc('What vegetable is this?', v.emoji, opts, pos, 10));
+
+    const wrong2 = shuffle(others).slice(0,3).map(x => x.word);
+    const pos2 = Math.floor(Math.random() * 4);
+    const opts2 = [...wrong2.slice(0,pos2), v.word, ...wrong2.slice(pos2)];
+    acts.push(listen(v.word.toLowerCase(), 'Which vegetable did you hear?', opts2, pos2, 10));
+  });
+  return acts;
 }
 
 // ========================
